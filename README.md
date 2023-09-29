@@ -65,3 +65,6 @@ for(let d=0;d<daysToRun;d++){
 
 ## Design
 This project keeps a log of every creature. In additon, each creature has a daily log that tracks events for that specific creature. Ancestry is also tracked for each creature. This is all just for the fun of being able to look at each creature's story, but it does mean that this simulation doesn't scale well beyond millions of creatures, and it's memory usage will continue to grow as the simulation runs.
+
+## Randomness
+Currently this uses the Math.random() pseudorandom generator, but the random function is in it's own module, so it can easily be overridden to use different randomness methods.
