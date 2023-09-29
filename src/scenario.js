@@ -7,9 +7,11 @@ class Scenario{
   livingCreatures = [];
   days = [];
   constructor(params){
+    this.params = params;
+    const t = this;
     Object.assign(this,params);
     for(let c=0;c<this.startingPopulation;c++){
-      this.creatures.push(new Creature());
+      this.creatures.push(new Creature(t.params));
     }
   }
   runDay(){
@@ -29,9 +31,10 @@ class Scenario{
       creatures: this.livingCreatures.length,
       doves: `${doveCount} (${Math.round((doveCount/this.livingCreatures.length)*100)}%)`,
       hawks: `${hawkCount} (${Math.round((hawkCount/this.livingCreatures.length)*100)}%)`,
-      doveToHawkRatio: Math.round(doveCount/hawkCount),
+      doveToHawkRatio: Math.round((doveCount/hawkCount)*100)/100,
       totalCreatureCount: this.creatures.length
     });
+    return this.days[this.days.length-1];
   }
   updateLivingCreatures(){
     this.livingCreatures = this.creatures.filter(e=>e.isAlive === true);
@@ -44,9 +47,10 @@ class Scenario{
     });
   }
   spawnFoodPods(count){
+    const t = this;
     this.foodPods = [];
     for(let i=0;i<count;i++){
-      this.foodPods.push(new FoodPod(this.foodPodFoodQuantity));
+      this.foodPods.push(new FoodPod(t.params));
     }
   }
   findFood(){
@@ -67,10 +71,12 @@ class Scenario{
     });
   }
   reproduce(){
+    const t = this;
     this.livingCreatures.forEach(e=>{
       e.reproduce();
       if(e.reproduced){
-        let newCreature = new Creature();
+        let newCreature = new Creature(t.params);
+        newCreature.isDove = e.isDove;
         newCreature.parent = e;
         this.creatures.push(newCreature);
         e.children.push(newCreature);

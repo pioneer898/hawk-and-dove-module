@@ -1,14 +1,20 @@
+const isSuccessful = require("./random");
+
 class FoodPod{
   foodQuantity;
+  fightEnergy;
   creatures = [];
-  constructor(foodQuantity){
-    this.foodQuantity = foodQuantity;
+  constructor(params){
+    this.foodQuantity = params.foodPodFoodQuantity;
+    this.fightEnergy = params.fightEnergy;
+    this.chanceToDieFromFight = params.chanceToDieFromFight;
   }
   introduceCreature(creature){
     this.creatures.push(creature);
     let hawks = this.creatures.filter(e=>e.isAlive === true && e.isDove === false);
     if(hawks.length > 1){
       hawks[0].fightWith(hawks[1]);
+      this.foodQuantity = Math.max(0,this.foodQuantity-this.fightEnergy);
     }
   }
   compete(){
@@ -21,8 +27,13 @@ class FoodPod{
     let sharedFood = (creatureCount > 1);
 
     if(hawk){
-      hawk.food = 1;
-      this.foodQuantity = this.foodQuantity-1;
+      if(this.foodQuantity >= 1){
+        hawk.food++;
+        this.foodQuantity--;
+      } else {
+        hawk.food += this.foodQuantity;
+        this.foodQuantity = 0;
+      }
     }
     let hawkShare = Math.min(this.foodQuantity/creatureCount,1);
     let doveShare = Math.min(this.foodQuantity/creatureCount,2);
