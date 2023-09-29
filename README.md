@@ -23,8 +23,8 @@ To simulate a "day" simply call `.runDay()`. This method will return the object 
 const Scenario = require('./scenario.js');
 
 const params = {
-  dailyFoodPods: 2000,
-  foodPodFoodQuantity: 20,
+  dailyFoodPods: 20,
+  foodPodFoodQuantity: 2,
   startingPopulation: 20,
   doveToHawkDays: 3,
   fightEnergy: 0.5,
